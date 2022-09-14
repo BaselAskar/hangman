@@ -1,0 +1,15 @@
+C:\ASP.NET\hangman\hangman\bin\Debug\net6.0\hangman.exe
+C:\ASP.NET\hangman\hangman\bin\Debug\net6.0\hangman.deps.json
+C:\ASP.NET\hangman\hangman\bin\Debug\net6.0\hangman.runtimeconfig.json
+C:\ASP.NET\hangman\hangman\bin\Debug\net6.0\hangman.dll
+C:\ASP.NET\hangman\hangman\bin\Debug\net6.0\hangman.pdb
+C:\ASP.NET\hangman\hangman\obj\Debug\net6.0\hangman.csproj.AssemblyReference.cache
+C:\ASP.NET\hangman\hangman\obj\Debug\net6.0\hangman.GeneratedMSBuildEditorConfig.editorconfig
+C:\ASP.NET\hangman\hangman\obj\Debug\net6.0\hangman.AssemblyInfoInputs.cache
+C:\ASP.NET\hangman\hangman\obj\Debug\net6.0\hangman.AssemblyInfo.cs
+C:\ASP.NET\hangman\hangman\obj\Debug\net6.0\hangman.csproj.CoreCompileInputs.cache
+C:\ASP.NET\hangman\hangman\obj\Debug\net6.0\hangman.dll
+C:\ASP.NET\hangman\hangman\obj\Debug\net6.0\refint\hangman.dll
+C:\ASP.NET\hangman\hangman\obj\Debug\net6.0\hangman.pdb
+C:\ASP.NET\hangman\hangman\obj\Debug\net6.0\hangman.genruntimeconfig.cache
+C:\ASP.NET\hangman\hangman\obj\Debug\net6.0\ref\hangman.dll
