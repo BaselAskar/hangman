@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Formats.Asn1;
 using System.Text;
 
 
@@ -10,13 +12,45 @@ namespace hangman
         {
             //Secret words
             string[] secretWords = { "gift", "towel", "soap", "monkey", "college", "basket", "latitude", "crow", "germ", "skeleton", "taxes", "energy", "electricity", "password", "competition", "thunder" };
-            
+
             bool repeatGame = false;
 
             do
             {
                 Console.Clear();
-                Console.WriteLine("======= Welecome in Hangman game =======");
+                //TimerWrite("************ Welcome in Hangman game ************");
+                TimerWrite("************ ", 100);
+                TimerWrite("Welcome in Hangman game");
+                TimerWrite(" ************", 100);
+                Console.WriteLine();
+                PrintShape(Graphics.smileFace, ConsoleColor.Yellow);
+
+
+
+                Console.WriteLine();
+                TimerWrite("Enter your name: ", 200);
+
+                string? myName = Console.ReadLine();
+
+                while (string.IsNullOrEmpty(myName))
+                {
+                    Console.WriteLine("Sorry I didn't understand what's your name!");
+                    Console.Write("Your Name: ");
+                    myName = Console.ReadLine();
+                }
+
+                Console.Clear();
+
+                //TimerWrite($"************ Welcome {myName} ************");
+                TimerWrite("************ ", 100);
+                TimerWrite($"Welcome {myName}");
+                TimerWrite(" ************", 100);
+                Console.WriteLine();
+                TimerWrite("Let's Start");
+                Thread.Sleep(3000);
+
+
+
                 Console.WriteLine();
                 Console.WriteLine("gusse the word\n");
 
@@ -36,75 +70,79 @@ namespace hangman
                 }
 
                 bool isWin = false;
-
-                Console.WriteLine(answerBuilder.ToString());
-                Console.WriteLine();
+                int round = 1;
 
 
-                //Playe the game
-                for (int i = 1; i <= 10; i++)
+                //Play the game
+                do
                 {
-                    Console.WriteLine($"Round {i}");
+                    Console.Clear();
+                    Console.WriteLine($"************ Welcome {myName} ************");
                     Console.WriteLine();
+                    PrintShape(Graphics.gallows[round - 1]);
+                    Console.WriteLine();
+                    Console.Write("          ");
+                    Console.WriteLine(answerBuilder.ToString());
+                    Console.WriteLine();
+
+
+                    Console.WriteLine($"Round {round} \n");
                     Console.WriteLine("Write a letter or your gusse word...");
 
                     string answer;
 
                     AnswerAndCheck(out answer, answerBuilder);
 
-
-                    while (answer.Length == 1 && secretWord.Contains(answer) && !isWin)
+                    if (answer.Length == 1 && secretWord.Contains(answer))
                     {
                         for (int index = 0; index < secretWord.Length; index++)
                         {
-                            if (secretWord[index] == answer[0]) answerBuilder[index] = answer[0];
+                            if (secretWord[index] == answer[0])
+                            {
+                                answerBuilder[index] = answer[0];
+                            }
+
+                            if (!answerBuilder.ToString().Contains('_'))
+                            {
+                                isWin = true;
+                            }
                         }
 
-                        //
-                        if (!answerBuilder.ToString().Contains('_'))
-                        {
-                            isWin = true;
-                            Win(secretWord);
-                        }
-                        else
-                        {
-                            Console.WriteLine();
-                            Console.WriteLine(answerBuilder);
-                            Console.WriteLine();
-                            Console.WriteLine("good go on...");
-                            AnswerAndCheck(out answer, answerBuilder);
-                        }
-
+                        continue;
                     }
-
-
-                    if (answer.Length == 1 && !secretWord.Contains(answer))
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("this is worng try another.......");
-                        Console.WriteLine();
-                    }
-
-
-
-
-                    if (answer.Length > 1 && answer == secretWord)
+                    else if (answer.Length > 1 && secretWord == answer)
                     {
                         isWin = true;
-                        Win(secretWord);
                     }
 
-                    if (isWin) break;
-                }
 
-                if (!isWin)
+                    round++;
+
+
+                } while (round <= 10 && !isWin);
+
+
+                Console.Clear();
+
+                if (isWin)
                 {
-                    Console.WriteLine("Sorry you loss .... ☹️☹️");
+                    Console.WriteLine($"************ Welcome {myName} ************");
+                    Console.WriteLine("\r");
+                    PrintShape(Graphics.headrt, ConsoleColor.Red);
                     Console.WriteLine();
-                    Console.WriteLine($"The secret word is: {secretWord}");
-                    Console.WriteLine("Good luck later..... 🤷‍♂️");
+                    Win(secretWord);
                 }
-
+                else
+                {
+                    Console.WriteLine($"************ Welcome {myName} ************");
+                    Console.WriteLine("\r");
+                    PrintShape(Graphics.gallows[10]);
+                    Console.WriteLine();
+                    PrintShape(Graphics.sadFace,ConsoleColor.Yellow);
+                    Console.WriteLine();
+                    Console.WriteLine($"The secret word is {secretWord}");
+                    Console.WriteLine("Goodluck....");
+                }
 
                 Console.WriteLine();
                 Console.WriteLine("Do you want to play agine (y / n)");
@@ -130,16 +168,16 @@ namespace hangman
                         repeatGame = false;
                         break;
 
-                    default: Console.WriteLine("Worng answer....");
+                    default:
+                        Console.WriteLine("Worng answer....");
                         break;
                 }
-
 
 
             } while (repeatGame);
         }
 
-        static void AnswerAndCheck(out string answer,StringBuilder answerBuilder)
+        static void AnswerAndCheck(out string answer, StringBuilder answerBuilder)
         {
             answer = Console.ReadLine()?.ToLower() ?? string.Empty;
 
@@ -158,7 +196,28 @@ namespace hangman
                 Console.WriteLine("Write a letter or your gusse word...");
                 answer = Console.ReadLine() ?? string.Empty;
             }
+
         }
+
+        static void TimerWrite(string message,int millisecondTimeout = 250)
+        {
+            foreach(char letter in message)
+            {
+                Thread.Sleep(millisecondTimeout);
+                Console.Write(letter);
+            }
+        }
+
+        static void PrintShape(string[] shape, ConsoleColor lineColor = ConsoleColor.White)
+        {
+            Console.ForegroundColor = lineColor;
+            foreach(string line in shape)
+            {
+                Console.WriteLine(line);
+            }
+            Console.ResetColor();
+        }
+
 
 
         static void Alert(string message)
@@ -172,7 +231,7 @@ namespace hangman
         static void Win(string word)
         {
             Console.BackgroundColor = ConsoleColor.Green;
-            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Great..... \n You win .. 🙂🎉");
             Console.ResetColor();
             Console.WriteLine();
